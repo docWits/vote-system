@@ -15,6 +15,8 @@ contract Voting {
   
   bytes32[] public candidateList;
 
+  bytes32[] public voterList;
+
   /* Это конструктор, который будет вызываться один раз, когда вы
    развернуть контракт в блокчейне. Когда мы развертываем контракт,
    мы пропустим ряд кандидатов, которые будут участвовать в выборах
@@ -27,6 +29,12 @@ contract Voting {
   function totalVotesFor(bytes32 candidate) returns (uint8) {
     if (validCandidate(candidate) == false) throw;
     return votesReceived[candidate];
+  }
+
+  // Эта функция проверяет голосовал ли ранее избиратель, если нет, то добавляем его в список избирателей
+  function votingList(bytes32 voter){
+    if (validVoter(voter) == true) throw;
+    validVoter.push(voter);
   }
 
   // Эта функция увеличивает количество голосов за указанного кандидата. Это равносильно голосованию
@@ -42,5 +50,14 @@ contract Voting {
       }
     }
     return false;
+  }
+
+  function validVoter(bytes32 voter) returns (bool){
+    for(uint i = 0; i < voterList.length; i++) {
+          if (voterList[i] == voter) {
+            return true;
+          }
+        }
+        return false;
   }
 }
